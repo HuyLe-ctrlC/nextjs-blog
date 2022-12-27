@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Date from "../../components/Date/date";
-import Layout from "../../components/layout";
+import Layout from "../../components/Layout";
 import { getAllPostIds, getPostData } from "../../lib/posts";
 import utilStyles from "../../styles/utils.module.css";
 export async function getStaticProps({ params }) {
@@ -23,7 +23,7 @@ export async function getStaticPaths() {
 }
 
 export default function Post({ postData }) {
-  console.log("postData", postData);
+//   console.log("postData", postData);
   return (
     <Layout>
       <Head>
