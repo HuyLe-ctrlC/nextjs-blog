@@ -7,7 +7,7 @@ export const getAllAction = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await userApi.getAll();
-      console.log("response", response.data.data);
+      // console.log("response", response.data.data);
       return response.data.data;
     } catch (error) {
       if (!error.response) {
