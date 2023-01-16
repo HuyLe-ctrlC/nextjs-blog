@@ -12,18 +12,42 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Date from "../components/Date/date";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUsers, getAllAction } from "../redux/slices/userSlices";
+import {
+  selectUsers,
+  getAllAction,
+  getInfoZalo,
+  getAccessTokenZalo,
+  getAccessTokenZaloNormal,
+} from "../redux/slices/userSlices";
 import { useEffect } from "react";
 import Comment from "../components/Comment";
 import Navigation from "../components/Navigation";
+import Login from "../components/Login/Login";
+import { useRouter } from "next/router";
 export default function Home({ allPostsData }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllAction());
   }, [dispatch]);
-
   const users = useSelector(selectUsers);
+  const router = useRouter();
+  useEffect(() => {
+    const { code } = router.query;
+    if (code) {
+      dispatch(getAccessTokenZaloNormal(code));
+    }
+  }, [router.query.code]);
+
+  useEffect(() => {
+    if (users?.data?.data?.access_token) {
+      console.log(
+        "users?.data?.data?.access_token",
+        users?.data?.data?.access_token
+      );
+      dispatch(getInfoZalo(users?.data?.data?.access_token));
+    }
+  }, [dispatch, users?.data?.data?.access_token]);
   return (
     <div className="container">
       <div>
@@ -31,19 +55,50 @@ export default function Home({ allPostsData }) {
         <div className="container-fluid">
           <div className="row">
             <div className="col min-vh-100 p-4">
+              <h1 className="text-center mb-4">
+                Hello {users?.info?.data?.name}
+              </h1>
               {/* toggler */}
-              <button
-                className="btn float-end btn-danger"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvas"
-                role="button"
-              >
-                <FontAwesomeIcon
-                  icon={faHandPointRight}
-                  className="text-warning"
-                />
-                <span className="text-white">Mê sờ nu</span>
-              </button>
+              <div className="mb-4">
+                <button
+                  className="btn float-end btn-danger"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvas"
+                  role="button"
+                >
+                  <FontAwesomeIcon
+                    icon={faHandPointRight}
+                    className="text-warning"
+                  />
+                  <span className="text-white">Mê sờ nu</span>
+                </button>
+                <Link
+                  className="btn float-end btn-success me-3"
+                  role="button"
+                  href="https://oauth.zaloapp.com/v4/oa/permission?app_id=2406961892426225416&redirect_uri=https://8ea6-1-52-83-234.ap.ngrok.io/login"
+                >
+                  <div className="d-flex align-items-center">
+                    <FontAwesomeIcon
+                      icon={faHandPointRight}
+                      className="text-warning"
+                    />
+                    <Login name="Office Account" />
+                  </div>
+                </Link>
+                <Link
+                  className="btn float-end btn-success me-3"
+                  role="button"
+                  href="https://oauth.zaloapp.com/v4/permission?app_id=2406961892426225416&redirect_uri=https://8ea6-1-52-83-234.ap.ngrok.io/&state=true"
+                >
+                  <div className="d-flex align-items-center">
+                    <FontAwesomeIcon
+                      icon={faHandPointRight}
+                      className="text-warning"
+                    />
+                    <Login name="User" />
+                  </div>
+                </Link>
+              </div>
               <Layout home>
                 <Head>
                   <title>{siteTitle}</title>
@@ -83,7 +138,7 @@ export default function Home({ allPostsData }) {
                     </Link>
                   </p>
                 </section>
-                <section
+                {/* <section
                   className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}
                 >
                   <h2 className={utilStyles.headingLg}>Blog</h2>
@@ -104,7 +159,7 @@ export default function Home({ allPostsData }) {
                   {users?.data?.map((item, index) => (
                     <Comment key={index} username={item.name} />
                   ))}
-                </div>
+                </div> */}
               </Layout>
             </div>
           </div>

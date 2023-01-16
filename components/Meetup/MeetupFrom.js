@@ -8,7 +8,7 @@ export default function MeetupFrom({ onAddMeetup }) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: ID,
+      // id: ID,
       title: "",
       image: "",
       address: "",
@@ -23,7 +23,7 @@ export default function MeetupFrom({ onAddMeetup }) {
   return (
     <>
       <form className="user" onSubmit={formik.handleSubmit}>
-        <div className="form-group d-none">
+        {/* <div className="form-group d-none">
           <label>
             ID <span className="text-danger">*</span>
           </label>
@@ -36,7 +36,7 @@ export default function MeetupFrom({ onAddMeetup }) {
           <div className="text-danger fs-6 mt-1">
             {formik.touched.id && formik.errors.id}
           </div>
-        </div>
+        </div> */}
         <div className="form-group">
           <label>
             Tiêu đề <span className="text-danger">*</span>
